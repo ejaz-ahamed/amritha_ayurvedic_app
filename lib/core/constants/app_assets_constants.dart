@@ -13,6 +13,6 @@ final class AppAssetsConstants {
   /// Prefix used for the app images
   static const _imagePath = 'assets/images/img_';
 
-  final icLogin = '${_imagePath}login.png';
-  final icSplash = '${_imagePath}splash_screen.png';
+  final imgLogin = '${_imagePath}login.png';
+  final imgSplash = '${_imagePath}splash_screen.png';
 }

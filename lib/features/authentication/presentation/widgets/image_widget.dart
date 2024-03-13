@@ -18,7 +18,7 @@ class ImageWidget extends HookWidget {
           width: MediaQuery.sizeOf(context).width,
           height: theme.spaces.space_500 * 6,
           child: Image.asset(
-            appAssets.icLogin,
+            appAssets.imgLogin,
             fit: BoxFit.fill,
           ),
         ),
