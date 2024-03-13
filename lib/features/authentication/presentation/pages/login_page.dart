@@ -61,7 +61,7 @@ class LoginPage extends HookWidget {
               ),
               ButtonWidget(
                 buttonName: appConstants.txtLogin,
-                onPressed: context.read<LoginProvider>().value.isLoading
+                onPressed: context.watch<LoginProvider>().loginState.isLoading
                     ? null
                     : () {
                         if (userController.text.isNotEmpty &&
