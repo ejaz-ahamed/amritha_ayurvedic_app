@@ -1,9 +1,13 @@
 import 'package:amritha_ayurveda/core/constants/home_constatnts.dart';
 import 'package:amritha_ayurveda/core/themes/app_theme.dart';
+import 'package:amritha_ayurveda/core/widgets/button_widget.dart';
 import 'package:amritha_ayurveda/features/authentication/presentation/provider/auth_redirection_provider.dart';
 import 'package:amritha_ayurveda/features/home/presentation/pages/branch_page.dart';
+import 'package:amritha_ayurveda/features/home/presentation/pages/registration_page.dart';
 import 'package:amritha_ayurveda/features/home/presentation/pages/treatment_page.dart';
+import 'package:amritha_ayurveda/features/home/presentation/provider/patient_provider.dart';
 import 'package:amritha_ayurveda/features/home/presentation/widgets/container_widget.dart';
+import 'package:amritha_ayurveda/features/home/presentation/widgets/listview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,9 +67,56 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
+            SizedBox(
+              height: theme.spaces.space_200,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: theme.spaces.space_300),
+              child: Text(
+                constants.txtPatientDetails,
+                style: theme.typography.h600.copyWith(
+                  fontSize: theme.spaces.space_250,
+                ),
+              ),
+            ),
+            FutureBuilder(
+              future: context.watch<PatientProvider>().getPatient(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListViewWidget(entity: snapshot.data!);
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.colors.secondary),
+                      onPressed: () {
+                        context.read<PatientProvider>().getPatient();
+                      },
+                      child: const Text(
+                        'Retry',
+                      ),
+                    ),
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            )
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: ButtonWidget(
+          buttonName: constants.txtRegister,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RegistrationPage(),
+              ),
+            );
+          }),
     );
   }
 }
