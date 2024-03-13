@@ -4,7 +4,7 @@ import 'package:amritha_ayurveda/core/themes/extensions/space_extension.dart';
 import 'package:amritha_ayurveda/core/themes/extensions/typography_extension.dart';
 import 'package:flutter/material.dart';
 
-final _lightTheme = ThemeData(
+final lightTheme = ThemeData(
   brightness: Brightness.light,
   extensions: [
     AppColorExtension(
