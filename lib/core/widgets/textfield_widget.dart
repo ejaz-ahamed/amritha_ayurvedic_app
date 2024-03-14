@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final String labelText;
+  final Widget? icon;
   final TextEditingController controller;
   const TextFieldWidget(
-      {super.key, required this.labelText, required this.controller});
+      {super.key,
+      required this.labelText,
+      required this.controller,
+      this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,7 @@ class TextFieldWidget extends StatelessWidget {
           fillColor: colors.textInverse,
           filled: true,
           labelText: labelText,
+          suffixIcon: icon,
           labelStyle: TextStyle(color: colors.textSubtle),
           border: OutlineInputBorder(
             borderSide: BorderSide(

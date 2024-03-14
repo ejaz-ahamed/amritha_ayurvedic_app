@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amritha_ayurveda/core/constants/api_constants.dart';
 import 'package:amritha_ayurveda/core/exceptions/api/api_exception.dart';
 import 'package:amritha_ayurveda/features/home/data/datasource/api_services_datasource.dart';
@@ -13,6 +15,7 @@ class ApiServicesDataSourceImpl implements ApiServicesDataSource {
   static const branchLink = ApiConstants.brancheList;
   static const treatmentLink = ApiConstants.treatmentList;
   static const tocken = ApiConstants.token;
+  static const updatePatient = ApiConstants.treatmentUpdate;
 
   ///get patients data
   @override
@@ -80,6 +83,62 @@ class ApiServicesDataSourceImpl implements ApiServicesDataSource {
       }
     } on Exception catch (_) {
       rethrow;
+    }
+  }
+
+  @override
+  Future<void> addPatient(
+    String name,
+    String phone,
+    String whatsappNumber,
+    String address,
+    String location,
+    Branch branch,
+    List<PatientdetailsSet> treatments,
+    int totalAmount,
+    int discountAmount,
+    String payment,
+    int balanceAmount,
+    int advanceAmount,
+    DateTime treatmentDate,
+    DateTime treatmentTime,
+  ) async {
+    final dio = Dio();
+    const apiUrl = link+updatePatient;
+    try {
+      final response = await dio.post(
+        apiUrl,
+        options: Options(
+          headers: {
+            'Authorization': tocken,
+          },
+        ),
+        data: {
+          'name': name,
+          'phone': phone,
+          'whatsappNumber': whatsappNumber,
+          'address': address,
+          'location': location,
+          'branch': branch.toJson(),
+          'treatments':
+              treatments.map((treatment) => treatment.toJson()).toList(),
+          'totalAmount': totalAmount,
+          'discountAmount': discountAmount,
+          'payment': payment,
+          'balanceAmount': balanceAmount,
+          'advanceAmount': advanceAmount,
+          'treatmentDate': treatmentDate.toString(),
+          'treatmentTime': treatmentTime.toString(),
+        },
+      );
+
+      if (response.statusCode == 200) {
+        log('Patient added successfully');
+      } else {
+        log('Failed to add patient. Error: ${response.data}');
+      }
+    } catch (e) {
+      log('Error: $e');
     }
   }
 }

@@ -3,6 +3,8 @@ import 'package:amritha_ayurveda/features/home/domain/entity/branch_entity.dart'
 import 'package:amritha_ayurveda/features/home/domain/entity/patient_entity.dart';
 import 'package:amritha_ayurveda/features/home/domain/entity/treatment_entity.dart';
 import 'package:amritha_ayurveda/features/home/domain/repository/api_repository.dart';
+import 'package:amritha_ayurveda/features/home/data/model/api_model.dart'
+    as api;
 
 class ApiRepositoryImpl implements ApiRepository {
   final ApiServicesDataSource dataSource;
@@ -74,5 +76,62 @@ class ApiRepositoryImpl implements ApiRepository {
         ),
     ];
     return results;
+  }
+
+  @override
+  Future<void> addPatient(
+    String name,
+    String phone,
+    String whatsappNumber,
+    String address,
+    String location,
+    Branch branch,
+    List<PatientdetailsSet> treatments,
+    int totalAmount,
+    int discountAmount,
+    String payment,
+    int balanceAmount,
+    int advanceAmount,
+    DateTime treatmentDate,
+    DateTime treatmentTime,
+  ) async {
+    final treatmentsModel = [
+      for (final treat in treatments)
+        api.PatientdetailsSet(
+          id: treat.id,
+          female: treat.female,
+          male: treat.male,
+          patient: treat.patient,
+          treatment: treat.treatment,
+          treatmentName: treat.treatmentName,
+        )
+    ];
+    final br = api.Branch(
+      id: branch.id,
+      name: name,
+      patientsCount: branch.patientsCount,
+      location: location,
+      phone: phone,
+      mail: branch.mail,
+      address: address,
+      gst: branch.gst,
+      isActive: branch.isActive,
+    );
+    await dataSource.addPatient(
+      name,
+      phone,
+      whatsappNumber,
+      address,
+      location,
+      br,
+      treatmentsModel,
+      totalAmount,
+      discountAmount,
+      payment,
+      balanceAmount,
+      advanceAmount,
+      treatmentDate,
+      treatmentTime,
+    );
   }
 }
